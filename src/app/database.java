@@ -61,16 +61,46 @@ public static void deposit(int pin, double amount){
                 update.executeUpdate();
                 System.out.println("updated table");
                 return;
-
-
-           }
-        }
+           }//end of if
+        }//end of while
         System.out.println("pin not valid"); //Pin does not exist
         
     }catch(Exception e) {
         System.out.println(e);
-    }
+    }//end of try/catch
 }//end of deposit method
+
+public static void withdrawal(int pin, double amount){
+    try{
+        Connection con = connect();
+
+        //check the pin
+        PreparedStatement post = con.prepareStatement("SELECT pin FROM checkingAccount");
+        post.executeQuery();
+
+        ResultSet result = post.getResultSet();
+        //ArrayList<String> list = new ArrayList<String>();
+        while(result.next()){
+          // System.out.println( result.getString("pin") ); //Debugging
+           if (Integer.parseInt(result.getString("pin")) == pin){ //Does the pin exist?
+                System.out.println("true");
+                /**************************/
+                //Update table
+                PreparedStatement update = con.prepareStatement("UPDATE checkingAccount SET " +
+                 " balance = balance - '"+amount+"' WHERE pin= '"+pin+"' ");
+                update.executeUpdate();
+                System.out.println("updated table");
+                return;
+           }//end of if
+        }//end of while
+        System.out.println("pin not valid"); //Pin does not exist
+        
+    }catch(Exception e) {
+        System.out.println(e);
+    }//end of try/catch
+}//end of deposit method
+
+
 
 }//end of class
 

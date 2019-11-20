@@ -22,7 +22,9 @@ public class App {
 
 
         //test 3
+        //database.deposit(1, 500);
 
-        database.deposit(1, 500);
+        //test 4
+        database.withdrawal(1, 500);
     }
 }
