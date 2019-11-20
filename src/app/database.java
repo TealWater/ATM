@@ -1,9 +1,6 @@
 package app;
 
 import java.sql.*;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 
@@ -52,12 +49,16 @@ public static void deposit(int pin, double amount){
         post.executeQuery();
 
         ResultSet result = post.getResultSet();
-        Array list;
-        
-            list = result.getArray("pin");
-        for(int a : list){
-            System.out.println(list[a]);
+        ArrayList<String> list = new ArrayList<String>();
+        while(result.next()){
+          // System.out.println( result.getString("pin") ); //Debugging
+           if (Integer.parseInt(result.getString("pin")) == pin){ //Does the pin exist?
+                System.out.println("true");
+                return;
+           }
         }
+        System.out.println("pin not valid"); //Pin does not exist
+        
     }catch(Exception e) {
         System.out.println(e);
     }
