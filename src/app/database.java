@@ -49,12 +49,20 @@ public static void deposit(int pin, double amount){
         post.executeQuery();
 
         ResultSet result = post.getResultSet();
-        ArrayList<String> list = new ArrayList<String>();
+        //ArrayList<String> list = new ArrayList<String>();
         while(result.next()){
           // System.out.println( result.getString("pin") ); //Debugging
            if (Integer.parseInt(result.getString("pin")) == pin){ //Does the pin exist?
                 System.out.println("true");
+                /**************************/
+                //Update table
+                PreparedStatement update = con.prepareStatement("UPDATE checkingAccount SET " +
+                 " balance = balance + '"+amount+"' WHERE pin= '"+pin+"' ");
+                update.executeUpdate();
+                System.out.println("updated table");
                 return;
+
+
            }
         }
         System.out.println("pin not valid"); //Pin does not exist
