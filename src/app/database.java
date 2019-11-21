@@ -83,18 +83,29 @@ public class database {
             post.executeQuery();
 
             ResultSet result = post.getResultSet();
-            // ArrayList<String> list = new ArrayList<String>();
             while (result.next()) {
                 // System.out.println( result.getString("pin") ); //Debugging
                 if (Integer.parseInt(result.getString("pin")) == pin) { // Does the pin exist?
-                    System.out.println("true");
+                    System.out.println("true"); //Debugging
                     /**************************/
-                    // Update table
-                    PreparedStatement update = con.prepareStatement("UPDATE checkingAccount SET "
-                            + " balance = balance - '" + amount + "' WHERE pin= '" + pin + "' ");
-                    update.executeUpdate();
-                    System.out.println("updated table");
-                    return;
+                    // check if withdrawal amount exceeds the amount on deposit.
+                    PreparedStatement check = con
+                            .prepareStatement("SELECT balance FROM checkingAccount WHERE pin = '" + pin + "' ");
+                    check.executeQuery();
+
+                    ResultSet gear = check.getResultSet();
+                    while (gear.next()) { // find an item to parse
+                        if (amount <= Double.parseDouble(gear.getString("balance"))) { // if withdrawal amount is equal
+                                                                                       // to or lower than the funds on
+                                                                                       // deposit, do the withdrawal.
+                            // Update table
+                            PreparedStatement update = con.prepareStatement("UPDATE checkingAccount SET "
+                                    + " balance = balance - '" + amount + "' WHERE pin= '" + pin + "' ");
+                            update.executeUpdate();
+                            System.out.println("updated table"); //Debugging
+                            return;
+                        }
+                    }
                 } // end of if
             } // end of while
             System.out.println("pin not valid"); // Pin does not exist
