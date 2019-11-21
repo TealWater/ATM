@@ -1,7 +1,6 @@
 package app;
 
 import java.sql.*;
-import java.util.ArrayList;
 
 public class database {
     private final static String user = "root";
@@ -9,7 +8,9 @@ public class database {
 
     // TODO
     /**
-     * - Add a saftey check to withdrawal method to prevent overdraft
+     * - Can we display the tables in Java?
+     * - Can we have multiple accounts with the same pin and allow withdrawals/deposits from/to multiple accounts?
+     * - display the same accounts with the same pin
      * 
      */
 
@@ -104,6 +105,8 @@ public class database {
                             update.executeUpdate();
                             System.out.println("updated table"); //Debugging
                             return;
+                        }else{
+                            throw new IllegalArgumentException("The withdrawal amount requested is greater than the amount on deposit.");  
                         }
                     }
                 } // end of if
